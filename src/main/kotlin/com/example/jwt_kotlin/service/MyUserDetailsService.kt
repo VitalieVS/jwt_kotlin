@@ -11,13 +11,11 @@ import org.springframework.stereotype.Service
 class MyUserDetailsService : UserDetailsService {
     @Autowired
     private lateinit var repository: UserRepository
+
     override fun loadUserByUsername(username: String?): UserDetails {
         val user: User? = username?.let { repository.findUserByUsername(it) }
-            return org.springframework.security.core.userdetails.User(
-                user?.username, user?.password, ArrayList()
-            )
-
+        return org.springframework.security.core.userdetails.User(
+            user?.username, user?.password, ArrayList()
+        )
     }
-
-
 }
