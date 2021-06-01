@@ -1,3 +1,17 @@
 package com.example.jwt_kotlin.entity
 
-data class Region()
+import lombok.AllArgsConstructor
+import lombok.Data
+import lombok.NoArgsConstructor
+import javax.persistence.*
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+data class Region (
+    @Id
+    @GeneratedValue
+    private val id: Int = 0,
+    private val name: String? = null,
+)
