@@ -9,10 +9,10 @@ import javax.persistence.*
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "region")
+@Table(name = "regions")
 data class Region (
     @Id
-    @GeneratedValue
-    private val id: Int = 0,
-    private val name: String? = null,
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Int = 0,
+    var name: String? = null
 )

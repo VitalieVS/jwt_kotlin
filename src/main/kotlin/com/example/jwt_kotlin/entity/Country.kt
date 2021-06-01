@@ -12,8 +12,8 @@ import javax.persistence.*
 @Table(name = "countries")
 data class Country (
     @Id
-    @GeneratedValue
-    private val id: Int = 0,
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Int = 0,
     var name: String? = null,
     var peopleCount: Long = 0,
     @OneToMany(targetEntity = City::class, cascade = [CascadeType.ALL])

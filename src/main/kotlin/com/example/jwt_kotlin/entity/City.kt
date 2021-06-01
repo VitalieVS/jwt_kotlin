@@ -9,13 +9,12 @@ import javax.persistence.*
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "city")
-class City(
+data class City(
     @Id
-    @GeneratedValue
-    private var id: Int = 0,
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Int = 0,
     var name: String? = null,
     @OneToMany(targetEntity = Region::class, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "countries_id", referencedColumnName = "id")
+    @JoinColumn(name = "regions_id", referencedColumnName = "id")
     var regions: List<Region>? = null
 )
