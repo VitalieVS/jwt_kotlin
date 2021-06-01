@@ -10,11 +10,11 @@ import javax.persistence.*
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
-class User {
+data class User (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private val id = 0
-    var username: String? = null
-    var password: String? = null
+    private val id: Int = 0,
+    var username: String? = null,
+    var password: String? = null,
     var email: String? = null
-}
+)
