@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class JwtKotlinApplication
 
 fun main(args: Array<String>) {
-	runApplication<JwtKotlinApplication>(*args) 
+	runApplication<JwtKotlinApplication>(*args)
 }
