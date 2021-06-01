@@ -13,21 +13,10 @@ class CountryController {
     @Autowired
     lateinit var countryService: CountryService
 
-    @Autowired
-    lateinit var countryRepository: CountryRepository
-
-//    @PostMapping("/addCountry")
-//    fun placeCountry(@RequestBody request: Country): Country {
-//        println("MY REQUEST")
-//        println(request)
-//        return countryService.saveCountry(request)
-//    }
-
     @PostMapping("/placeCountry")
     fun addCountry(@RequestBody request: CountryRequest): Country? {
         return request.country?.let { countryService.saveCountry(it) }
     }
-
 
     @GetMapping("/country/name/{name}")
     fun getCountryByName(@PathVariable name: String): Country {
@@ -37,5 +26,10 @@ class CountryController {
     @GetMapping("/countries")
     fun getCountries(): MutableList<Country> {
         return countryService.getCountries()
+    }
+
+    @PutMapping("/update")
+    fun updateCountry(@RequestBody request: CountryRequest): Country? {
+        return request.country?.let { countryService.updateCountry(it) }
     }
 }

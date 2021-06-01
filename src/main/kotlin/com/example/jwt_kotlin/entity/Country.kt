@@ -13,7 +13,7 @@ import javax.persistence.*
 data class Country (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int = 0,
+    var id: Int? = null,
     var name: String? = null,
     var peopleCount: Long = 0,
     @OneToMany(targetEntity = City::class, cascade = [CascadeType.ALL])

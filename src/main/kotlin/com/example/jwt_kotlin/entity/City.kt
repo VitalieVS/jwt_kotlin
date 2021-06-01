@@ -12,7 +12,7 @@ import javax.persistence.*
 data class City(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int = 0,
+    var id: Int? = null,
     var name: String? = null,
     @OneToMany(targetEntity = Region::class, cascade = [CascadeType.ALL])
     @JoinColumn(name = "regions_id", referencedColumnName = "id")

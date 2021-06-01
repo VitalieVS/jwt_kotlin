@@ -13,6 +13,6 @@ import javax.persistence.*
 data class Region (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int = 0,
+    var id: Int? = null,
     var name: String? = null
 )
