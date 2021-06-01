@@ -25,5 +25,10 @@ class CountryService {
 
         return countryRepository.save(existingCountry)
     }
+
+    fun removeById(id: Int) : String {
+        countryRepository.deleteById(id)
+        return "Deleted id:$id"
+    }
     
 }

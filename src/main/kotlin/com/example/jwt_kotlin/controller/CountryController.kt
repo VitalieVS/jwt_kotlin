@@ -32,4 +32,9 @@ class CountryController {
     fun updateCountry(@RequestBody request: CountryRequest): Country? {
         return request.country?.let { countryService.updateCountry(it) }
     }
+
+    @DeleteMapping("/delete/{id}")
+    fun deleteCountry(@PathVariable id: Int): String {
+        return countryService.removeById(id)
+    }
 }
