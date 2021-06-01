@@ -18,5 +18,5 @@ data class Country (
     var peopleCount: Long = 0,
     @OneToMany(targetEntity = City::class, cascade = [CascadeType.ALL])
     @JoinColumn(name = "countries_id", referencedColumnName = "id")
-    var regions: List<City>? = null
+    var cities: List<City>? = null
 )

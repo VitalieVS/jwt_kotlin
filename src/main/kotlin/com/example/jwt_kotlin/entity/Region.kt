@@ -9,6 +9,7 @@ import javax.persistence.*
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "region")
 data class Region (
     @Id
     @GeneratedValue
