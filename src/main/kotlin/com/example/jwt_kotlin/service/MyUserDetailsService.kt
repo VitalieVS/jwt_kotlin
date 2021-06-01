@@ -1,6 +1,6 @@
 package com.example.jwt_kotlin.service
 
-import com.example.jwt_kotlin.User.User
+import com.example.jwt_kotlin.entity.User
 import com.example.jwt_kotlin.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails

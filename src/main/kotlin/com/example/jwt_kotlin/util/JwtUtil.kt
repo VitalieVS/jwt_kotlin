@@ -17,14 +17,14 @@ class JwtUtil {
         return createToken(claims, username)
     }
 
-     fun createToken(claims: Map<String, Any>, subject: String): String? {
+    fun createToken(claims: Map<String, Any>, subject: String): String? {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(
             Date(System.currentTimeMillis())
         ).setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
             .signWith(SignatureAlgorithm.HS256, secret).compact()
     }
 
-    fun isTokenExpired(token: String?): Boolean? {
+  fun isTokenExpired(token: String?): Boolean? {
         return extractExpiration(token).before(Date())
     }
 
