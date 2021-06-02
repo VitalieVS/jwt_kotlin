@@ -9,7 +9,7 @@ import javax.persistence.*
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "regions")
+@Table(name = "region")
 data class Region (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
