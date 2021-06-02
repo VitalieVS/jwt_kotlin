@@ -1,7 +1,8 @@
-CREATE TABLE IF NOT EXISTS user (
+CREATE TABLE IF NOT EXISTS users (
     id int(11) NOT NULL AUTO_INCREMENT,
     username VARCHAR(30) NOT NULL,
     password VARCHAR(30) NOT NULL,
     email VARCHAR(50) NOT NULL,
+    role VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 )

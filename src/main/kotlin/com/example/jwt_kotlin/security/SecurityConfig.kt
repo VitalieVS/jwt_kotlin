@@ -45,9 +45,13 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http.csrf().disable().authorizeRequests().antMatchers("/auth")
-            .permitAll().anyRequest().authenticated().and().exceptionHandling()
+        http.csrf().disable();
+
+        http.authorizeRequests().antMatchers("/placeCountry").hasRole("ADMIN")
+            .antMatchers("/auth").permitAll().anyRequest()
+            .authenticated().and().exceptionHandling()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 }

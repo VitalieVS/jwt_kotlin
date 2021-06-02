@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -17,6 +19,8 @@ class CountryController {
     lateinit var countryService: CountryService
 
     @PostMapping("/placeCountry")
+    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     fun addCountry(@RequestBody request: CountryRequest): Country? {
         return request.country?.let { countryService.saveCountry(it) }
     }

@@ -16,5 +16,6 @@ data class User (
     private val id: Int = 0,
     var username: String? = null,
     var password: String? = null,
-    var email: String? = null
+    var email: String? = null,
+    var roles: String? = null
 )
