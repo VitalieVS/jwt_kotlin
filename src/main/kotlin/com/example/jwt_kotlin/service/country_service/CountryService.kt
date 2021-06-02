@@ -26,7 +26,7 @@ class CountryService {
         val existingCountry = country.id?.let { countryRepository.findById(it).orElse(null) }!!
         existingCountry.name = country.name
         existingCountry.peopleCount = country.peopleCount
-        existingCountry.cities = country.cities
+        existingCountry.regions = country.regions
 
         return countryRepository.save(existingCountry)
     }
