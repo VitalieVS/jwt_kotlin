@@ -17,5 +17,12 @@ data class User (
     var username: String? = null,
     var password: String? = null,
     var email: String? = null,
-    var roles: String? = null
+    var roles: String? = null,
+    @OneToOne
+    @JoinTable(
+    name = "users_role",
+    joinColumns = [JoinColumn(name = "user_id")],
+    inverseJoinColumns = [JoinColumn(name = "role_id")]
+    )
+    private val role: Role? = null
 )
