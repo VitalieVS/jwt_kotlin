@@ -18,9 +18,7 @@ class CountryController {
     @Autowired
     lateinit var countryService: CountryService
 
-    @PostMapping("/placeCountry")
-    @Secured("ROLE_ADMIN")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/addCountry")
     fun addCountry(@RequestBody request: CountryRequest): Country? {
         return request.country?.let { countryService.saveCountry(it) }
     }

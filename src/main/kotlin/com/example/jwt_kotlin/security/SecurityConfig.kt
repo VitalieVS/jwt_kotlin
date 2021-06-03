@@ -47,7 +47,8 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.csrf().disable();
 
-        http.authorizeRequests().antMatchers("/placeCountry").hasRole("ADMIN")
+        http.authorizeRequests().antMatchers("/addCountry").access("hasRole('ROLE_ADMIN')")
+            .antMatchers("/countries").access("hasAnyRole()")
             .antMatchers("/auth").permitAll().anyRequest()
             .authenticated().and().exceptionHandling()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

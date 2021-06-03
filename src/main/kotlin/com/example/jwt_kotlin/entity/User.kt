@@ -24,5 +24,5 @@ data class User (
     joinColumns = [JoinColumn(name = "user_id")],
     inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
-    private val role: Role? = null
+    var role: Role? = null
 )
