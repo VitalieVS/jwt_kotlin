@@ -1,6 +1,6 @@
 package com.example.jwt_kotlin.controller
 
-import com.example.jwt_kotlin.entity.AuthRequest
+import com.example.jwt_kotlin.dto.AuthRequest
 import com.example.jwt_kotlin.entity.User
 import com.example.jwt_kotlin.repository.UserRepository
 import com.example.jwt_kotlin.util.JwtUtil
@@ -61,14 +61,20 @@ class MainController {
             userRepository.save(user)
             return "Granted Access for:" + user.username
         }
+
         return "Not sufficient rights to perform this operation!"
     }
 
     private fun getRolesOfLoggedUser(principal: Principal): List<String> {
         val roles: String? = getLoggedUser(principal).roles
-        val assignRoles = Arrays.stream(roles?.split(",")?.toTypedArray()).collect(Collectors.toList())
-        if (assignRoles.contains("ROLE_ADMIN")) return Arrays.stream(ADMIN_ACCESS)
-            .collect(Collectors.toList())
+        val assignRoles = Arrays.stream(
+            roles?.split(",")?.toTypedArray()
+        ).collect(Collectors.toList())
+
+        if (assignRoles.contains("ROLE_ADMIN"))
+            return Arrays.stream(ADMIN_ACCESS)
+                .collect(Collectors.toList())
+
         return if (assignRoles.contains("ROLE_USER")) Arrays.stream(USER_ACCESS).collect(
             Collectors.toList()
         ) else emptyList()

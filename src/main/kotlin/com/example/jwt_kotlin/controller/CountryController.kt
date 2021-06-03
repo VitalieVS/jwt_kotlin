@@ -47,6 +47,7 @@ class CountryController {
 
     @GetMapping("/pagedcountries")
     fun getPagedCountries(countryPage: CountryPage?): Any? {
-        return ResponseEntity<Any?>(countryPage?.let { countryService.getPagedCountries(it) }, HttpStatus.OK)
+        return ResponseEntity<Any?>(countryPage?.let {
+            countryService.getPagedCountries(it) }, HttpStatus.OK)
     }
 }

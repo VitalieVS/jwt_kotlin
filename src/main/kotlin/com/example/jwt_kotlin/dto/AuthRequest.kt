@@ -1,4 +1,4 @@
-package com.example.jwt_kotlin.entity
+package com.example.jwt_kotlin.dto
 
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor

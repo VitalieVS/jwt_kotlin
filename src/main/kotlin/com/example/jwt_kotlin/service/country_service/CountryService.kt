@@ -23,7 +23,9 @@ class CountryService {
     fun getCountries(): MutableList<Country> = countryRepository.findAll()
 
     fun updateCountry(country: Country) : Country {
-        val existingCountry = country.id?.let { countryRepository.findById(it).orElse(null) }!!
+        val existingCountry = country.id?.let {
+            countryRepository.findById(it).orElse(null)
+        }!!
         existingCountry.name = country.name
         existingCountry.peopleCount = country.peopleCount
         existingCountry.regions = country.regions

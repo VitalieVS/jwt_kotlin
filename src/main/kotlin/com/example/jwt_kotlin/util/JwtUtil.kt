@@ -24,7 +24,7 @@ class JwtUtil {
             .signWith(SignatureAlgorithm.HS256, secret).compact()
     }
 
-  fun isTokenExpired(token: String?): Boolean? {
+    fun isTokenExpired(token: String?): Boolean? {
         return extractExpiration(token).before(Date())
     }
 
