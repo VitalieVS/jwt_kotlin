@@ -1,6 +1,7 @@
 package com.example.jwt_kotlin.security
 
 import com.example.jwt_kotlin.filter.JwtFilter
+import com.example.jwt_kotlin.repository.RoleRepository
 import com.example.jwt_kotlin.service.MyUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -27,6 +28,9 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
     @Autowired
     lateinit var myUserDetailsService: MyUserDetailsService
 
+    @Autowired
+    lateinit var roleRepository: RoleRepository
+
     @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService<UserDetailsService?>(myUserDetailsService)
@@ -45,10 +49,17 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
+        val roles: MutableList<com.example.jwt_kotlin.entity.Role> = roleRepository.findAll()
         http.csrf().disable();
 
-        http.authorizeRequests().antMatchers("/addCountry").access("hasRole('ROLE_ADMIN')")
-            .antMatchers("/countries").access("hasAnyRole()")
+        for (role in roles) {
+            for (permission in role.permissions!!) {
+                http.authorizeRequests()
+                    .antMatchers(permission.name).hasAuthority(permission.name)
+            }
+        }
+
+        http.authorizeRequests()
             .antMatchers("/auth").permitAll().anyRequest()
             .authenticated().and().exceptionHandling()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

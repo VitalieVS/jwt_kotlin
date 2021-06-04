@@ -13,5 +13,13 @@ data class Role(
     @GeneratedValue
     var id: Int? = null,
     @Column(name = "role_name")
-    var roleName: String? = null
+    var roleName: String? = null,
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "roles_permissions",
+        joinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "permission_id", referencedColumnName = "id")]
+    )
+    var permissions: Collection<Permission>? = null
 )
