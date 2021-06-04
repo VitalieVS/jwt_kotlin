@@ -55,8 +55,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         val permissions: MutableList<Permission> = permissionRepository.findAll()
-
-        println(permissions)
         http.csrf().disable()
 
         permissions.forEach {
