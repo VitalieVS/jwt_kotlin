@@ -48,5 +48,4 @@ class JwtFilter : OncePerRequestFilter() {
         filterChain.doFilter(httpServletRequest, httpServletResponse)
     }
 
-
 }

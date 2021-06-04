@@ -1,6 +1,8 @@
 package com.example.jwt_kotlin.security
 
+import com.example.jwt_kotlin.entity.Permission
 import com.example.jwt_kotlin.filter.JwtFilter
+import com.example.jwt_kotlin.repository.PermissionRepository
 import com.example.jwt_kotlin.repository.RoleRepository
 import com.example.jwt_kotlin.service.MyUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig: WebSecurityConfigurerAdapter() {
+class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
     lateinit var jwtFilter: JwtFilter
@@ -30,6 +32,9 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
 
     @Autowired
     lateinit var roleRepository: RoleRepository
+
+    @Autowired
+    lateinit var permissionRepository: PermissionRepository
 
     @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -49,15 +54,17 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        val roles: MutableList<com.example.jwt_kotlin.entity.Role> = roleRepository.findAll()
-        http.csrf().disable();
+        val permissions: MutableList<Permission> = permissionRepository.findAll()
 
-        for (role in roles) {
-            for (permission in role.permissions!!) {
-                http.authorizeRequests()
-                    .antMatchers(permission.name).hasAuthority(permission.name)
-            }
+        println(permissions)
+        http.csrf().disable()
+
+        permissions.forEach {
+            println(it.name)
+            http.authorizeRequests()
+                .antMatchers(it.name).hasAuthority(it.name)
         }
+
 
         http.authorizeRequests()
             .antMatchers("/auth").permitAll().anyRequest()

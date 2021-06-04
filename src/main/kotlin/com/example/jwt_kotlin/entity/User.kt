@@ -18,11 +18,11 @@ data class User (
     var password: String? = null,
     var email: String? = null,
     var roles: String? = null,
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL])
     @JoinTable(
-    name = "users_role",
-    joinColumns = [JoinColumn(name = "user_id")],
-    inverseJoinColumns = [JoinColumn(name = "role_id")]
+        name = "users_role",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
     var role: Role? = null
 )
