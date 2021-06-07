@@ -1,5 +1,6 @@
-package com.example.jwt_kotlin.service.region_service
+package com.example.jwt_kotlin.service.city_service
 
+import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Region
 import com.example.jwt_kotlin.model.CountryPage
 import com.example.jwt_kotlin.repository.CityRepository
@@ -7,11 +8,10 @@ import com.example.jwt_kotlin.repository.RegionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
 @Service
-class RegionService {
+class CityService {
 
     @Autowired
     lateinit var regionRepository: RegionRepository
@@ -27,7 +27,13 @@ class RegionService {
         return regionRepository.findDistinctByCitiesNotNull(pageable)
     }
 
-    fun getRegionsById(id: Int) = cityRepository.findByIdCities(id)
+    fun getCitiesByRegionId(countryPage: CountryPage, id: Int): List<City> {
+        val pageable: Pageable = PageRequest.of(
+            countryPage.pageNumber,
+            countryPage.pageSize
+        )
+        return cityRepository.findByIdCities(pageable, id)
+    }
 
 
 }
