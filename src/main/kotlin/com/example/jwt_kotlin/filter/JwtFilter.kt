@@ -1,6 +1,6 @@
 package com.example.jwt_kotlin.filter
 
-import com.example.jwt_kotlin.service.MyUserDetailsService
+import com.example.jwt_kotlin.service.user_details_service.MyUserDetailsService
 import com.example.jwt_kotlin.util.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

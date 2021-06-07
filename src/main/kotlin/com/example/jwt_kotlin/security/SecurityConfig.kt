@@ -1,10 +1,9 @@
 package com.example.jwt_kotlin.security
 
-import com.example.jwt_kotlin.entity.Permission
 import com.example.jwt_kotlin.filter.JwtFilter
 import com.example.jwt_kotlin.repository.PermissionRepository
 import com.example.jwt_kotlin.repository.RoleRepository
-import com.example.jwt_kotlin.service.MyUserDetailsService
+import com.example.jwt_kotlin.service.user_details_service.MyUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -31,9 +30,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     lateinit var myUserDetailsService: MyUserDetailsService
 
     @Autowired
-    lateinit var roleRepository: RoleRepository
-
-    @Autowired
     lateinit var permissionRepository: PermissionRepository
 
     @Throws(Exception::class)
@@ -42,15 +38,12 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder? {
-        return NoOpPasswordEncoder.getInstance()
-    }
+    fun passwordEncoder(): PasswordEncoder? = NoOpPasswordEncoder.getInstance()
 
     @Bean(name = [BeanIds.AUTHENTICATION_MANAGER])
     @Throws(Exception::class)
-    override fun authenticationManagerBean(): AuthenticationManager? {
-        return super.authenticationManagerBean()
-    }
+    override fun authenticationManagerBean(): AuthenticationManager? = super.authenticationManagerBean()
+
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {

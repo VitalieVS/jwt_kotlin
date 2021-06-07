@@ -1,7 +1,9 @@
 package com.example.jwt_kotlin.controller
 
 import com.example.jwt_kotlin.dto.CityRequest
+import com.example.jwt_kotlin.dto.CountryRequest
 import com.example.jwt_kotlin.entity.City
+import com.example.jwt_kotlin.entity.Country
 import com.example.jwt_kotlin.model.CountryPage
 import com.example.jwt_kotlin.service.city_service.CityService
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,8 +20,12 @@ class CityController {
     fun getPagedCities(@PathVariable(required = false) id: Int?, countryPage: CountryPage?): Any? {
         if (id == null) return countryPage?.let { cityService.getPagedFiltered(it) }
 
-        return countryPage?.let {cityService.getCitiesByRegionId(it, id)}
+        return countryPage?.let { cityService.getCitiesByRegionId(it, id) }
     }
+
+    @PostMapping("/city/addCountry")
+    fun addCountry(@RequestBody request: CityRequest): City? =
+        request.city?.let { cityService.saveCity(it) }
 
     @GetMapping("/city/name/{name}")
     fun getCityByName(@PathVariable name: String) = cityService.showCityName(name)

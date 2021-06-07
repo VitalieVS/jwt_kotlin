@@ -1,4 +1,4 @@
-package com.example.jwt_kotlin.service
+package com.example.jwt_kotlin.service.user_details_service
 
 import com.example.jwt_kotlin.entity.Permission
 import com.example.jwt_kotlin.repository.RoleRepository

@@ -1,14 +1,12 @@
 package com.example.jwt_kotlin.entity
 
 import lombok.AllArgsConstructor
-import lombok.Data
 import javax.persistence.*
 
-@Data
 @AllArgsConstructor
 @Entity
 @Table(name = "regions")
-data class Region (
+data class Region(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Int? = null,

@@ -1,4 +1,4 @@
-package com.example.jwt_kotlin.service
+package com.example.jwt_kotlin.service.user_details_service
 
 import com.example.jwt_kotlin.entity.Role
 import com.example.jwt_kotlin.entity.User
@@ -12,7 +12,6 @@ class MyUserDetails(
 ) : UserDetails {
 
     private var user: Optional<User?>? = user
-
 
     override fun getAuthorities(): List<GrantedAuthority> {
         val role: Role? = user?.get()?.role
