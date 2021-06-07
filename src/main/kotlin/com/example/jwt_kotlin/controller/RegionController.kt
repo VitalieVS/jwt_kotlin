@@ -6,10 +6,6 @@ import com.example.jwt_kotlin.model.CountryPage
 import com.example.jwt_kotlin.repository.RegionRepository
 import com.example.jwt_kotlin.service.region_service.RegionService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -23,13 +19,13 @@ class RegionController {
     lateinit var regionService: RegionService
 
     @GetMapping("/region/{id}")
-    fun getRegionsByName(@PathVariable id: Int) = regionService.getRegionsByName(id)
+    fun getRegionsByName(@PathVariable id: Int) = regionService.getRegionsById(id)
 
     @GetMapping
     @RequestMapping(value = ["/pagedregions", "/pagedregions/{id}"])
     fun getPagedCities(@PathVariable(required = false) id: Int?, countryPage: CountryPage?): Any? {
         if (id == null) return countryPage?.let { regionService.getPagedFiltered(it) }
 
-        return regionService.getRegionsByName(id)
+        return regionService.getRegionsById(id)
     }
 }
