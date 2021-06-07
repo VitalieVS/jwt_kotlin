@@ -35,5 +35,23 @@ class CityService {
         return cityRepository.findByIdCities(pageable, id)
     }
 
+    fun saveCity(city: City): City = cityRepository.save(city)
 
+    fun showCityName(name: String) = cityRepository.findByName(name)
+
+    fun getCities(): MutableList<City> = cityRepository.findAll()
+
+    fun updateCity(city: City): City {
+        val existingCity = city.id?.let {
+            cityRepository.findById(it).orElse(null)
+        }!!
+        existingCity.name = city.name
+
+        return cityRepository.save(existingCity)
+    }
+
+    fun removeById(id: Int): String {
+        cityRepository.deleteById(id)
+        return "Deleted id:$id"
+    }
 }

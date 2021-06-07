@@ -1,12 +1,11 @@
 package com.example.jwt_kotlin.controller
 
+import com.example.jwt_kotlin.dto.CityRequest
+import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.model.CountryPage
 import com.example.jwt_kotlin.service.city_service.CityService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -20,7 +19,18 @@ class CityController {
         if (id == null) return countryPage?.let { cityService.getPagedFiltered(it) }
 
         return countryPage?.let {cityService.getCitiesByRegionId(it, id)}
-
-        //cityService.getRegionsById(id)
     }
+
+    @GetMapping("/city/name/{name}")
+    fun getCityByName(@PathVariable name: String) = cityService.showCityName(name)
+
+    @GetMapping("/cities")
+    fun getCities(): MutableList<City> = cityService.getCities()
+
+    @PutMapping("/city/update")
+    fun updateCity(@RequestBody request: CityRequest) =
+        request.city?.let { cityService.updateCity(it) }
+
+    @DeleteMapping("/city/delete/{id}")
+    fun deleteCity(@PathVariable id: Int) = cityService.removeById(id)
 }
