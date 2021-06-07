@@ -22,13 +22,12 @@ class RegionController {
     @Autowired
     lateinit var regionService: RegionService
 
-
     @GetMapping("/region/{id}")
     fun getRegionsByName(@PathVariable id: Int) = regionService.getRegionsByName(id)
 
     @GetMapping
     @RequestMapping(value = ["/pagedregions", "/pagedregions/{id}"])
-    fun getPagedCountries(@PathVariable(required = false) id: Int?, countryPage: CountryPage?): Any? {
+    fun getPagedCities(@PathVariable(required = false) id: Int?, countryPage: CountryPage?): Any? {
         if (id == null) return countryPage?.let { regionService.getPagedFiltered(it) }
 
         return regionService.getRegionsByName(id)
