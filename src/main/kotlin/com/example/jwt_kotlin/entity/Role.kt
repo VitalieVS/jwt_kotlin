@@ -7,7 +7,6 @@ import javax.persistence.*
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Table(name = "roles")
 data class Role(

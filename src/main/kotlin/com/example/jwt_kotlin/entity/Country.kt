@@ -7,7 +7,6 @@ import javax.persistence.*
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "countries")
 data class Country (

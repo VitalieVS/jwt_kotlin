@@ -8,7 +8,6 @@ import javax.persistence.*
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "permissions")
 data class Permission(
     @Id
