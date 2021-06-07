@@ -1,7 +1,6 @@
 package com.example.jwt_kotlin.repository
 
 import com.example.jwt_kotlin.entity.City
-import com.example.jwt_kotlin.entity.Region
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
