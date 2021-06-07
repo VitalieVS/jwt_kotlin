@@ -16,7 +16,7 @@ class CityController {
     lateinit var cityService: CityService
 
     @GetMapping
-    @RequestMapping(value = ["/pagedcities", "/pagedcities/{id}"])
+    @RequestMapping(value = ["/city/pagedcities", "/city/pagedcities/{id}"])
     fun getPagedCities(@PathVariable(required = false) id: Int?, countryPage: CountryPage?): Any? {
         if (id == null) return countryPage?.let { cityService.getPagedFiltered(it) }
 
@@ -30,7 +30,7 @@ class CityController {
     @GetMapping("/city/name/{name}")
     fun getCityByName(@PathVariable name: String) = cityService.showCityName(name)
 
-    @GetMapping("/cities")
+    @GetMapping("/city/cities")
     fun getCities(): MutableList<City> = cityService.getCities()
 
     @PutMapping("/city/update")
