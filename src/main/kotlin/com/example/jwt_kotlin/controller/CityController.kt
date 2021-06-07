@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-class RegionController {
+class CityController {
 
     @Autowired
     lateinit var regionService: RegionService
