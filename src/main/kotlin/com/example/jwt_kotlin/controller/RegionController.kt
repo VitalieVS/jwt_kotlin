@@ -17,7 +17,6 @@ class RegionController {
     @PostMapping("/region/addregion")
     fun addCountry(@RequestBody request: RegionRequest): Region? = request.region?.let { regionService.saveRegion(it) }
 
-
     @GetMapping("/region/regions")
     fun getCities(): MutableList<Region> = regionService.getRegions()
 
