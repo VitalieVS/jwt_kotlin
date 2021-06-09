@@ -26,5 +26,4 @@ class RegionController {
 
     @DeleteMapping("/region/delete/{id}")
     fun deleteCity(@PathVariable id: Int) = regionService.removeRegionById(id)
-
 }

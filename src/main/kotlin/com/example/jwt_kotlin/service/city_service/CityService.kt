@@ -3,7 +3,6 @@ package com.example.jwt_kotlin.service.city_service
 import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Region
 import com.example.jwt_kotlin.model.CityPage
-import com.example.jwt_kotlin.model.CountryPage
 import com.example.jwt_kotlin.repository.CityRepository
 import com.example.jwt_kotlin.repository.RegionRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,12 +21,14 @@ class CityService {
     @Autowired
     lateinit var cityRepository: CityRepository
 
+
     fun getPagedFiltered(cityPage: CityPage): Page<Region>? {
         val pageable: Pageable = PageRequest.of(
             cityPage.pageNumber,
             cityPage.pageSize
         )
         return regionRepository.findDistinctByCitiesNotNull(pageable)
+       //return countryRepository.findCountriesById(pageable)
     }
 
     fun getCitiesByRegionId(cityPage: CityPage, ids: List<Int>): Page<City>? {
@@ -36,13 +37,21 @@ class CityService {
             cityPage.pageSize
         )
 
-        val cities = mutableListOf<City>()
 
-        ids.forEach {
-            cities.addAll(cityRepository.findByIdCities(pageable, it))
-        }
+        //val pageImpl = PageImpl(cityRepository.findByIdCities(pageable, ids), pageable)
 
-        return PageImpl(cities, pageable, cities.size.toLong())
+
+//        val cities = mutableListOf<City>()
+//
+//        ids.forEach {
+//            cities.addAll(cityRepository.findByIdCities(pageable, it))
+//        }
+
+       //return countryRepository.findCountriesById(pageable, ids)
+
+        //return PageImpl(city, pageable, cities.size.toLong())
+       // return PageImpl
+        return cityRepository.findByIdCities(pageable, ids)
     }
 
     fun saveCity(city: City): City = cityRepository.save(city)

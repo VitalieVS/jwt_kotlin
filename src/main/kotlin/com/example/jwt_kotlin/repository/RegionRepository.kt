@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 
 interface RegionRepository : JpaRepository<Region, Int> {
-    fun findDistinctByCitiesNotNull(pageable: org.springframework.data.domain.Pageable): Page<Region>?
+    fun findDistinctByCitiesNotNull(pageable: org.springframework.data.domain.Pageable): Page<Region>
     fun findByName(name: String): Region
 }

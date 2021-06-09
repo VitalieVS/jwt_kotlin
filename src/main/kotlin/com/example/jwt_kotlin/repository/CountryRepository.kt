@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface CountryRepository : JpaRepository<Country, Int> {
     fun findByName(name: String): Country;
     fun save(country: Country?): Country
+
 }
