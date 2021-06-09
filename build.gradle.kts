@@ -8,6 +8,13 @@ plugins {
 	kotlin("plugin.spring") version "1.5.10"
 }
 
+afterEvaluate {
+	tasks.withType(KotlinCompile::class)
+		.forEach {
+			it.kotlinOptions { freeCompilerArgs = listOf("-Xnew-inference") }
+		}
+}
+
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
