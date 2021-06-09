@@ -28,7 +28,6 @@ class CityService {
             cityPage.pageSize
         )
         return regionRepository.findDistinctByCitiesNotNull(pageable)
-       //return countryRepository.findCountriesById(pageable)
     }
 
     fun getCitiesByRegionId(cityPage: CityPage, ids: List<Int>): Page<City>? {
@@ -38,19 +37,6 @@ class CityService {
         )
 
 
-        //val pageImpl = PageImpl(cityRepository.findByIdCities(pageable, ids), pageable)
-
-
-//        val cities = mutableListOf<City>()
-//
-//        ids.forEach {
-//            cities.addAll(cityRepository.findByIdCities(pageable, it))
-//        }
-
-       //return countryRepository.findCountriesById(pageable, ids)
-
-        //return PageImpl(city, pageable, cities.size.toLong())
-       // return PageImpl
         return cityRepository.findByIdCities(pageable, ids)
     }
 

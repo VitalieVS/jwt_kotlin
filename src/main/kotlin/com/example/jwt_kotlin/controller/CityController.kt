@@ -16,10 +16,6 @@ class CityController {
     @GetMapping
     @RequestMapping(value = ["/city/pagedcities", "/city/pagedcities/{ids}"])
     fun getPagedCities(@PathVariable(required = false) ids: List<Int>?, cityPage: CityPage?): Any? {
-
-        println("IDS HERE")
-
-        println(ids)
         if (ids == null) return cityPage?.let { cityService.getPagedFiltered(it) }
 
         return cityPage?.let { cityService.getCitiesByRegionId(it, ids) }
