@@ -4,18 +4,12 @@ import com.example.jwt_kotlin.dto.CitySearchCriteria
 import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.model.CityPage
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
+import org.springframework.data.domain.*
 import org.springframework.stereotype.Repository
 import java.util.*
 import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Root
+import javax.persistence.criteria.*
 
 
 @Repository
@@ -30,21 +24,23 @@ class CityCriteriaRepository(entityManager: EntityManager) {
     fun findAllWithFilters(
         cityPage: CityPage,
         citySearchCriteria: CitySearchCriteria
-    ): Page<City> {
+    ): PageImpl<City>? {
         val criteriaQuery: CriteriaQuery<City> = criteriaBuilder.createQuery(City::class.java)
         val cityRoot: Root<City> = criteriaQuery.from(City::class.java)
         val predicate: Predicate = getPredicate(citySearchCriteria, cityRoot)
         criteriaQuery.where(predicate)
-        setOrder(cityPage, criteriaQuery, cityRoot)
+       // setOrder(cityPage, criteriaQuery, cityRoot)
 
         val typedQuery: TypedQuery<City> = entityManager.createQuery(criteriaQuery)
 
         typedQuery.firstResult = cityPage.pageNumber * cityPage.pageSize
         typedQuery.maxResults = cityPage.pageSize
-        
+
         val pageable: Pageable = getPageable(cityPage)
-        
+
         val cityCount: Long? = getCitiesCount(predicate)
+
+        return cityCount?.let { PageImpl(typedQuery.resultList, pageable, it) }
 
     }
 
@@ -63,8 +59,10 @@ class CityCriteriaRepository(entityManager: EntityManager) {
 
     }
 
-    private fun getPredicate(citySearchCriteria: CitySearchCriteria,
-                             cityRoot: Root<City>): Predicate {
+    private fun getPredicate(
+        citySearchCriteria: CitySearchCriteria,
+        cityRoot: Root<City>
+    ): Predicate {
         val predicates: MutableList<Predicate> = ArrayList()
 
         if (Objects.nonNull(citySearchCriteria.name)) {
@@ -77,12 +75,18 @@ class CityCriteriaRepository(entityManager: EntityManager) {
     }
 
 
-    private fun setOrder(cityPage: CityPage, criteriaQuery: CriteriaQuery<City>, cityRoot: Root<City>) {
-        if (cityPage.sortDirection == Sort.Direction.ASC) {
-            criteriaQuery.orderBy(criteriaBuilder.asc(cityRoot.get(cityPage.sortBy)))
-        } else {
-            criteriaQuery.orderBy(criteriaBuilder.desc(cityRoot.get(cityPage.sortBy)))
-        }
-    }
+//    private fun setOrder(cityPage: CityPage, criteriaQuery: CriteriaQuery<City>, cityRoot: Root<City>) {
+//
+//        if (cityPage.sortDirection.equals(Sort.Direction.ASC)) {
+//            criteriaQuery.orderBy(criteriaBuilder.asc(cityRoot.get(cityPage.sortBy)))
+//            }
+//
+////        if (cityPage.sortDirection == Sort.Direction.ASC) {
+////            criteriaQuery.orderBy(criteriaBuilder.asc(cityRoot.get(cityPage.sortBy)))
+////        } else {
+////            criteriaQuery.orderBy(criteriaBuilder.desc(cityRoot.get(cityPage.sortBy)))
+////        }
+//    }
 
 }
+
