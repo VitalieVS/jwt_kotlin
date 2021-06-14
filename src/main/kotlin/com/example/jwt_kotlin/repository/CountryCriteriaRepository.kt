@@ -1,10 +1,9 @@
 package com.example.jwt_kotlin.repository
 
-import com.example.jwt_kotlin.dto.CitySearchCriteria
 import com.example.jwt_kotlin.dto.CountrySearchCriteria
 import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Country
-import com.example.jwt_kotlin.model.CityPage
+import com.example.jwt_kotlin.entity.Region
 import com.example.jwt_kotlin.model.CountryPage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.*
@@ -29,7 +28,10 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
     ): PageImpl<Country>? {
         val criteriaQuery: CriteriaQuery<Country> = criteriaBuilder.createQuery(Country::class.java)
         val countryRoot: Root<Country> = criteriaQuery.from(Country::class.java)
+
         val predicate: Predicate = getPredicate(countrySearchCriteria, countryRoot)
+
+
         // criteriaQuery.select(cityRoot).where(cityRoot.`in`(citySearchCriteria.ids))
         criteriaQuery.select(countryRoot).where(predicate)
 
@@ -37,16 +39,15 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
 
         typedQuery.firstResult = countryPage.pageNumber * countryPage.pageSize
         typedQuery.maxResults = countryPage.pageSize
-
+        var countryCount: Long? = getCountryCount(predicate)
         val pageable: Pageable = getPageable(countryPage)
 
-        val countryCount: Long? = getCitiesCount(predicate)
 
         return countryCount?.let { PageImpl(typedQuery.resultList, pageable, it) }
 
     }
 
-    private fun getCitiesCount(predicate: Predicate): Long? {
+    private fun getCountryCount(predicate: Predicate): Long? {
         val countQuery: CriteriaQuery<Long> = criteriaBuilder.createQuery(Long::class.java)
         val countRoot: Root<Country> = countQuery.from(Country::class.java)
         countQuery.select(criteriaBuilder.count(countRoot)).where(predicate)
@@ -65,12 +66,16 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
     ): Predicate {
         val predicates: MutableList<Predicate> = ArrayList()
 
+//        val joinRegions: Join<Country, Region> = countryRoot.join("regions", JoinType.INNER)
+//        joinRegions.alias("name")
+//        val joinCities: Join<Region, City> = joinRegions.join("cities", JoinType.INNER)
+//        joinCities.alias("name")
+
         if (Objects.nonNull(countrySearchCriteria.name)) {
             predicates.add(
                 criteriaBuilder.like(countryRoot["name"], "%" + countrySearchCriteria.name.toString() + "%")
             )
         }
-
 
         if (countrySearchCriteria.peopleCount > 0) {
             predicates.add(
@@ -78,14 +83,16 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
             )
         }
 
-//        if (Objects.nonNull(countrySearchCriteria.regions)) {
-//            predicates.add(
-//                criteriaBuilder.like(countryRoot["regions_name"], "%" + countrySearchCriteria.regions + "%")
-//            )
-//        }
+        if (Objects.nonNull(countrySearchCriteria.regionName)) {
+            val joinRegions: Join<Country, Region> = countryRoot.join("regions", JoinType.INNER)
+            joinRegions.alias("name")
+            predicates.add(
+                criteriaBuilder.like(joinRegions.get("name"), "%" + countrySearchCriteria.regionName.toString() + "%")
+            )
+        }
 
-//        if (countrySearchCriteria.ids?.isNotEmpty() == true)
-//            predicates.add(countryRoot.`in`(countrySearchCriteria.ids))
+        if (countrySearchCriteria.ids?.isNotEmpty() == true)
+            predicates.add(countryRoot.`in`(countrySearchCriteria.ids))
 
         return criteriaBuilder.and(*predicates.toTypedArray())
     }
