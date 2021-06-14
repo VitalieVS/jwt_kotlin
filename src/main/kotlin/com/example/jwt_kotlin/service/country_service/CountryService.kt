@@ -6,6 +6,7 @@ import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Country
 import com.example.jwt_kotlin.model.CityPage
 import com.example.jwt_kotlin.model.CountryPage
+import com.example.jwt_kotlin.repository.CityRepository
 import com.example.jwt_kotlin.repository.CountryCriteriaRepository
 import com.example.jwt_kotlin.repository.CountryRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,6 +51,14 @@ class CountryService {
             countryPage.pageSize, sort
         )
         return countryRepository.findAll(pageable)
+    }
+
+    fun getCitiesId(countryPage: CountryPage, ids: List<Int>): Page<Country> {
+        val pageable: Pageable = PageRequest.of(
+            countryPage.pageNumber,
+            countryPage.pageSize
+        )
+        return countryRepository.fetchCities(pageable, ids)
     }
 
     fun getFilteredCountries(countryPage: CountryPage,

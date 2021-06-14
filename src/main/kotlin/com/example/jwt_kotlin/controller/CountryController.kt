@@ -27,9 +27,6 @@ class CountryController {
     @GetMapping("/country/name/{name}")
     fun getCountryByName(@PathVariable name: String): Country = countryService.showCountryName(name)
 
-//    @GetMapping("/country/countries")
-//    fun getCountries(): MutableList<Country> = countryService.getCountries()
-
     @PutMapping("/country/update")
     fun updateCountry(@RequestBody request: CountryRequest): Country? =
         request.country?.let { countryService.updateCountry(it) }
@@ -37,17 +34,14 @@ class CountryController {
     @DeleteMapping("/country/delete/{id}")
     fun deleteCountry(@PathVariable id: Int): String = countryService.removeById(id)
 
-    @GetMapping("/country/pagedcountries")
-    fun getPagedCountries(countryPage: CountryPage?): Any? =
-        ResponseEntity<Any?>(countryPage?.let {
-            countryService.getPagedCountries(it)
-        }, HttpStatus.OK)
-
-    @GetMapping("/country/countries")
-    fun getCities(countryPage: CountryPage?,
-                  countrySearchCriteria: CountrySearchCriteria
-    ): PageImpl<Country>? {
-        return countryPage?.let { countryService.getFilteredCountries(it, countrySearchCriteria) }
+    @GetMapping
+    @RequestMapping(value = ["/country/pagedcountries", "/country/pagedcountries/{ids}"])
+    fun getPagedCountries(@PathVariable(required = false) ids: List<Int>?, countryPage: CountryPage?,
+                          countrySearchCriteria: CountrySearchCriteria): Any? {
+        return if (ids == null) {
+            countryPage?.let { countryService.getFilteredCountries(it, countrySearchCriteria) }
+        } else {
+            countryPage?.let { countryService.getCitiesId(it, ids) }
+        }
     }
-
 }

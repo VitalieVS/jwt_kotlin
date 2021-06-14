@@ -31,20 +31,18 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
 
         val predicate: Predicate = getPredicate(countrySearchCriteria, countryRoot)
 
-
-        // criteriaQuery.select(cityRoot).where(cityRoot.`in`(citySearchCriteria.ids))
+//         criteriaQuery.select(countryRoot).where(countryRoot.`in`(countrySearchCriteria.ids))
+//             .where(predicate)
         criteriaQuery.select(countryRoot).where(predicate)
 
         val typedQuery: TypedQuery<Country> = entityManager.createQuery(criteriaQuery)
 
         typedQuery.firstResult = countryPage.pageNumber * countryPage.pageSize
         typedQuery.maxResults = countryPage.pageSize
-        var countryCount: Long? = getCountryCount(predicate)
+        val countryCount: Long? = getCountryCount(predicate)
         val pageable: Pageable = getPageable(countryPage)
 
-
         return countryCount?.let { PageImpl(typedQuery.resultList, pageable, it) }
-
     }
 
     private fun getCountryCount(predicate: Predicate): Long? {
@@ -66,10 +64,8 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
     ): Predicate {
         val predicates: MutableList<Predicate> = ArrayList()
 
-//        val joinRegions: Join<Country, Region> = countryRoot.join("regions", JoinType.INNER)
-//        joinRegions.alias("name")
-//        val joinCities: Join<Region, City> = joinRegions.join("cities", JoinType.INNER)
-//        joinCities.alias("name")
+        lateinit var joinRegions: Join<Country, Region>
+       // lateinit var joinCities: Join<Region, City>
 
         if (Objects.nonNull(countrySearchCriteria.name)) {
             predicates.add(
@@ -84,15 +80,14 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
         }
 
         if (Objects.nonNull(countrySearchCriteria.regionName)) {
-            val joinRegions: Join<Country, Region> = countryRoot.join("regions", JoinType.INNER)
+            joinRegions = countryRoot.join("regions", JoinType.INNER)
             joinRegions.alias("name")
             predicates.add(
-                criteriaBuilder.like(joinRegions.get("name"), "%" + countrySearchCriteria.regionName.toString() + "%")
+                criteriaBuilder.like(
+                    joinRegions.get("name"), "%" + countrySearchCriteria.regionName.toString() + "%"
+                )
             )
         }
-
-        if (countrySearchCriteria.ids?.isNotEmpty() == true)
-            predicates.add(countryRoot.`in`(countrySearchCriteria.ids))
 
         return criteriaBuilder.and(*predicates.toTypedArray())
     }
