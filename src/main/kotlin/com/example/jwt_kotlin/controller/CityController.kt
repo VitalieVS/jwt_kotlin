@@ -6,7 +6,6 @@ import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.model.CityPage
 import com.example.jwt_kotlin.service.city_service.CityService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.web.bind.annotation.*
 
@@ -29,7 +28,6 @@ class CityController {
     citySearchCriteria: CitySearchCriteria): PageImpl<City>? {
         return cityPage?.let { cityService.getCitiesTry(it, citySearchCriteria) }
     }
-
 
     @PostMapping("/city/addCountry")
     fun addCountry(@RequestBody request: CityRequest): City? =

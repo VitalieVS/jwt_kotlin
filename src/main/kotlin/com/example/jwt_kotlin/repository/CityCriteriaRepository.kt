@@ -20,7 +20,6 @@ class CityCriteriaRepository(entityManager: EntityManager) {
 
     var criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
 
-
     fun findAllWithFilters(
         cityPage: CityPage,
         citySearchCriteria: CitySearchCriteria
@@ -29,7 +28,6 @@ class CityCriteriaRepository(entityManager: EntityManager) {
         val cityRoot: Root<City> = criteriaQuery.from(City::class.java)
         val predicate: Predicate = getPredicate(citySearchCriteria, cityRoot)
         criteriaQuery.where(predicate)
-       // setOrder(cityPage, criteriaQuery, cityRoot)
 
         val typedQuery: TypedQuery<City> = entityManager.createQuery(criteriaQuery)
 
@@ -50,7 +48,6 @@ class CityCriteriaRepository(entityManager: EntityManager) {
         countQuery.select(criteriaBuilder.count(countRoot)).where(predicate)
 
         return entityManager.createQuery(countQuery).singleResult
-
     }
 
     private fun getPageable(cityPage: CityPage): Pageable {
@@ -71,22 +68,9 @@ class CityCriteriaRepository(entityManager: EntityManager) {
             )
         }
 
+
         return criteriaBuilder.and(*predicates.toTypedArray())
     }
-
-
-//    private fun setOrder(cityPage: CityPage, criteriaQuery: CriteriaQuery<City>, cityRoot: Root<City>) {
-//
-//        if (cityPage.sortDirection.equals(Sort.Direction.ASC)) {
-//            criteriaQuery.orderBy(criteriaBuilder.asc(cityRoot.get(cityPage.sortBy)))
-//            }
-//
-////        if (cityPage.sortDirection == Sort.Direction.ASC) {
-////            criteriaQuery.orderBy(criteriaBuilder.asc(cityRoot.get(cityPage.sortBy)))
-////        } else {
-////            criteriaQuery.orderBy(criteriaBuilder.desc(cityRoot.get(cityPage.sortBy)))
-////        }
-//    }
 
 }
 

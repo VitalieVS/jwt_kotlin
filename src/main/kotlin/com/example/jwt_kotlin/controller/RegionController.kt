@@ -2,8 +2,10 @@ package com.example.jwt_kotlin.controller
 
 import com.example.jwt_kotlin.dto.RegionRequest
 import com.example.jwt_kotlin.entity.Region
+import com.example.jwt_kotlin.model.CityPage
 import com.example.jwt_kotlin.service.region_service.RegionService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageImpl
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -17,8 +19,15 @@ class RegionController {
     @PostMapping("/region/addregion")
     fun addCountry(@RequestBody request: RegionRequest): Region? = request.region?.let { regionService.saveRegion(it) }
 
+//    @GetMapping("/region/regions")
+//    fun getCities(): MutableList<Region> = regionService.getRegions()
+
     @GetMapping("/region/regions")
-    fun getCities(): MutableList<Region> = regionService.getRegions()
+    fun getCities(cityPage: CityPage?,
+                  regionSearchCriteria: RegionSearchCriteria
+    ): PageImpl<Region>? {
+        return cityPage?.let { regionService.getRegionsTry(it, regionSearchCriteria) }
+    }
 
     @PutMapping("/region/update")
     fun updateCity(@RequestBody request: RegionRequest) =

@@ -1,8 +1,11 @@
 package com.example.jwt_kotlin.service.region_service
 
+
 import com.example.jwt_kotlin.entity.Region
+import com.example.jwt_kotlin.model.CityPage
 import com.example.jwt_kotlin.repository.RegionRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageImpl
 import org.springframework.stereotype.Service
 
 @Service
@@ -31,5 +34,4 @@ class RegionService {
         regionRepository.deleteById(id)
         return "Deleted id:$id"
     }
-
 }
