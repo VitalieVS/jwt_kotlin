@@ -63,19 +63,15 @@ class CityCriteriaRepository(entityManager: EntityManager) {
     ): Predicate {
         val predicates: MutableList<Predicate> = ArrayList()
 
-
         if (Objects.nonNull(citySearchCriteria.name)) {
             predicates.add(
                 criteriaBuilder.like(cityRoot["name"], "%" + citySearchCriteria.name.toString() + "%")
             )
         }
 
-        if (citySearchCriteria.ids?.isNotEmpty() == true) {
-            //cityRoot.`in`(citySearchCriteria.ids)
-            predicates.add(
-                cityRoot.`in`(citySearchCriteria.ids)
-            )
-        }
+        if (citySearchCriteria.ids?.isNotEmpty() == true)
+            predicates.add(cityRoot.`in`(citySearchCriteria.ids))
+
 
         return criteriaBuilder.and(*predicates.toTypedArray())
     }
