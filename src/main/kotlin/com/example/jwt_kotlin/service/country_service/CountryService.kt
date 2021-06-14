@@ -1,13 +1,15 @@
 package com.example.jwt_kotlin.service.country_service
 
+import com.example.jwt_kotlin.dto.CitySearchCriteria
+import com.example.jwt_kotlin.dto.CountrySearchCriteria
+import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Country
+import com.example.jwt_kotlin.model.CityPage
 import com.example.jwt_kotlin.model.CountryPage
+import com.example.jwt_kotlin.repository.CountryCriteriaRepository
 import com.example.jwt_kotlin.repository.CountryRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
+import org.springframework.data.domain.*
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,6 +17,9 @@ class CountryService {
 
     @Autowired
     lateinit var countryRepository: CountryRepository
+
+    @Autowired
+    lateinit var countryCriteriaRepository: CountryCriteriaRepository
 
     fun saveCountry(country: Country): Country = countryRepository.save(country)
 
@@ -45,6 +50,12 @@ class CountryService {
             countryPage.pageSize, sort
         )
         return countryRepository.findAll(pageable)
+    }
+
+    fun getFilteredCountries(countryPage: CountryPage,
+                     countrySearchCriteria: CountrySearchCriteria
+    ): PageImpl<Country>? {
+        return countryCriteriaRepository.findAllWithFilters(countryPage, countrySearchCriteria)
     }
     
 }

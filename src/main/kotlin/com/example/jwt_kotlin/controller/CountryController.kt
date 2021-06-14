@@ -1,10 +1,15 @@
 package com.example.jwt_kotlin.controller
 
+import com.example.jwt_kotlin.dto.CitySearchCriteria
 import com.example.jwt_kotlin.dto.CountryRequest
+import com.example.jwt_kotlin.dto.CountrySearchCriteria
+import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Country
+import com.example.jwt_kotlin.model.CityPage
 import com.example.jwt_kotlin.model.CountryPage
 import com.example.jwt_kotlin.service.country_service.CountryService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageImpl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -22,8 +27,8 @@ class CountryController {
     @GetMapping("/country/name/{name}")
     fun getCountryByName(@PathVariable name: String): Country = countryService.showCountryName(name)
 
-    @GetMapping("/country/countries")
-    fun getCountries(): MutableList<Country> = countryService.getCountries()
+//    @GetMapping("/country/countries")
+//    fun getCountries(): MutableList<Country> = countryService.getCountries()
 
     @PutMapping("/country/update")
     fun updateCountry(@RequestBody request: CountryRequest): Country? =
@@ -37,5 +42,12 @@ class CountryController {
         ResponseEntity<Any?>(countryPage?.let {
             countryService.getPagedCountries(it)
         }, HttpStatus.OK)
+
+    @GetMapping("/country/countries")
+    fun getCities(countryPage: CountryPage?,
+                  countrySearchCriteria: CountrySearchCriteria
+    ): PageImpl<Country>? {
+        return countryPage?.let { countryService.getFilteredCountries(it, countrySearchCriteria) }
+    }
 
 }

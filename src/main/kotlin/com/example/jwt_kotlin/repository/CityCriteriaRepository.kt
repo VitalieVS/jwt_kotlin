@@ -54,7 +54,6 @@ class CityCriteriaRepository(entityManager: EntityManager) {
     private fun getPageable(cityPage: CityPage): Pageable {
         val sort: Sort = Sort.by(cityPage.sortDirection, cityPage.sortBy)
         return PageRequest.of(cityPage.pageNumber, cityPage.pageSize, sort)
-
     }
 
     private fun getPredicate(
@@ -71,7 +70,6 @@ class CityCriteriaRepository(entityManager: EntityManager) {
 
         if (citySearchCriteria.ids?.isNotEmpty() == true)
             predicates.add(cityRoot.`in`(citySearchCriteria.ids))
-
 
         return criteriaBuilder.and(*predicates.toTypedArray())
     }
