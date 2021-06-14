@@ -1,17 +1,11 @@
 package com.example.jwt_kotlin.controller
 
-import com.example.jwt_kotlin.dto.CitySearchCriteria
 import com.example.jwt_kotlin.dto.CountryRequest
 import com.example.jwt_kotlin.dto.CountrySearchCriteria
-import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Country
-import com.example.jwt_kotlin.model.CityPage
 import com.example.jwt_kotlin.model.CountryPage
 import com.example.jwt_kotlin.service.country_service.CountryService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.PageImpl
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
