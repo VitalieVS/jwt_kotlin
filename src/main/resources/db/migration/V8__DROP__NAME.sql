@@ -1,1 +1,0 @@
-ALTER TABLE roles DROP IF EXISTS name;

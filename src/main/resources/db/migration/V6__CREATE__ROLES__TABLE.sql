@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS roles (
     id int(11) NOT NULL AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL,
+    role_name VARCHAR(30) NOT NULL,
     PRIMARY KEY (id)
     )

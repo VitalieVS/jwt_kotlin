@@ -45,10 +45,9 @@ class CountryService {
     }
 
     fun getPagedCountries(countryPage: CountryPage): Page<Country?>? {
-        val sort: Sort = Sort.by(countryPage.sortDirection, countryPage.sortBy)
         val pageable: Pageable = PageRequest.of(
             countryPage.pageNumber,
-            countryPage.pageSize, sort
+            countryPage.pageSize
         )
         return countryRepository.findAll(pageable)
     }
@@ -56,7 +55,7 @@ class CountryService {
     fun getCitiesId(countryPage: CountryPage, ids: List<Int>): Page<Country> {
         val pageable: Pageable = PageRequest.of(
             countryPage.pageNumber,
-            countryPage.pageSize
+            1
         )
         return countryRepository.fetchCities(pageable, ids)
     }
