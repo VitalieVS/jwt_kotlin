@@ -27,7 +27,8 @@ class CityCriteriaRepository(entityManager: EntityManager) {
         val criteriaQuery: CriteriaQuery<City> = criteriaBuilder.createQuery(City::class.java)
         val cityRoot: Root<City> = criteriaQuery.from(City::class.java)
         val predicate: Predicate = getPredicate(citySearchCriteria, cityRoot)
-        criteriaQuery.where(predicate)
+       // criteriaQuery.select(cityRoot).where(cityRoot.`in`(citySearchCriteria.ids))
+        criteriaQuery.select(cityRoot).where(predicate)
 
         val typedQuery: TypedQuery<City> = entityManager.createQuery(criteriaQuery)
 
@@ -62,12 +63,19 @@ class CityCriteriaRepository(entityManager: EntityManager) {
     ): Predicate {
         val predicates: MutableList<Predicate> = ArrayList()
 
+
         if (Objects.nonNull(citySearchCriteria.name)) {
             predicates.add(
                 criteriaBuilder.like(cityRoot["name"], "%" + citySearchCriteria.name.toString() + "%")
             )
         }
 
+        if (citySearchCriteria.ids?.isNotEmpty() == true) {
+            //cityRoot.`in`(citySearchCriteria.ids)
+            predicates.add(
+                cityRoot.`in`(citySearchCriteria.ids)
+            )
+        }
 
         return criteriaBuilder.and(*predicates.toTypedArray())
     }

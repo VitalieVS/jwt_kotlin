@@ -22,13 +22,6 @@ class RegionController {
 //    @GetMapping("/region/regions")
 //    fun getCities(): MutableList<Region> = regionService.getRegions()
 
-    @GetMapping("/region/regions")
-    fun getCities(cityPage: CityPage?,
-                  regionSearchCriteria: RegionSearchCriteria
-    ): PageImpl<Region>? {
-        return cityPage?.let { regionService.getRegionsTry(it, regionSearchCriteria) }
-    }
-
     @PutMapping("/region/update")
     fun updateCity(@RequestBody request: RegionRequest) =
         request.region?.let { regionService.updateRegion(it) }
