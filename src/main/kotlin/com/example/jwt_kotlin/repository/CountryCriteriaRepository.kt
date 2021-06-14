@@ -71,11 +71,18 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
             )
         }
 
-        if (Objects.nonNull(countrySearchCriteria.peopleCount)) {
+
+        if (countrySearchCriteria.peopleCount > 0) {
             predicates.add(
                 criteriaBuilder.equal(countryRoot.get<Long>("peopleCount"), countrySearchCriteria.peopleCount)
             )
         }
+
+//        if (Objects.nonNull(countrySearchCriteria.regions)) {
+//            predicates.add(
+//                criteriaBuilder.like(countryRoot["regions_name"], "%" + countrySearchCriteria.regions + "%")
+//            )
+//        }
 
 //        if (countrySearchCriteria.ids?.isNotEmpty() == true)
 //            predicates.add(countryRoot.`in`(countrySearchCriteria.ids))
