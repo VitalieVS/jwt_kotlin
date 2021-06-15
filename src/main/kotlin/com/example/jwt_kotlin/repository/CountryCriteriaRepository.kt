@@ -28,19 +28,15 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
     ): PageImpl<Country>? {
         val criteriaQuery: CriteriaQuery<Country> = criteriaBuilder.createQuery(Country::class.java)
         val countryRoot: Root<Country> = criteriaQuery.from(Country::class.java)
-
         val predicate: Predicate = getPredicate(countrySearchCriteria, countryRoot)
-
-//         criteriaQuery.select(countryRoot).where(countryRoot.`in`(countrySearchCriteria.ids))
-//             .where(predicate)
-        criteriaQuery.select(countryRoot).where(predicate)
-
         val typedQuery: TypedQuery<Country> = entityManager.createQuery(criteriaQuery)
+        val countryCount: Long? = getCountryCount(predicate)
+        val pageable: Pageable = getPageable(countryPage)
+
+        criteriaQuery.select(countryRoot).where(predicate)
 
         typedQuery.firstResult = countryPage.pageNumber * countryPage.pageSize
         typedQuery.maxResults = countryPage.pageSize
-        val countryCount: Long? = getCountryCount(predicate)
-        val pageable: Pageable = getPageable(countryPage)
 
         return countryCount?.let { PageImpl(typedQuery.resultList, pageable, it) }
     }

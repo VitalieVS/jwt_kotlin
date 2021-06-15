@@ -53,7 +53,7 @@ class CountryService {
             countryPage.pageNumber,
             1
         )
-        return countryRepository.fetchCities(pageable, ids)
+        return countryRepository.fetchCountriesRegionsCities(pageable, ids)
     }
 
     fun getFilteredCountries(countryPage: CountryPage,

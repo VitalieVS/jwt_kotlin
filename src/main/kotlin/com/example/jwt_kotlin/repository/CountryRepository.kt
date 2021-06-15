@@ -19,6 +19,5 @@ interface CountryRepository : JpaRepository<Country, Int> {
                 "WHERE r.id in :ids",
         nativeQuery = true
     )
-    fun fetchCities(pageable: Pageable, @Param("ids") ids: List<Int>): Page<Country>
-
+    fun fetchCountriesRegionsCities(pageable: Pageable, @Param("ids") ids: List<Int>): Page<Country>
 }
