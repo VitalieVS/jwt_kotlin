@@ -18,9 +18,11 @@ class CityController {
     @GetMapping
     @RequestMapping(value = ["/city/pagedcities", "/city/pagedcities/{ids}"])
     fun getPagedCities(@PathVariable(required = false) ids: List<Int>?, cityPage: CityPage?): Any? {
-        if (ids == null) return cityPage?.let { cityService.getPagedFiltered(it) }
-
-        return cityPage?.let { cityService.getCitiesByRegionId(it, ids) }
+        return if (ids == null) {
+            cityPage?.let { cityService.getPagedFiltered(it) }
+        } else {
+            cityPage?.let { cityService.getCitiesByRegionId(it, ids) }
+        }
     }
 
     @GetMapping("/city/cities")
@@ -35,9 +37,6 @@ class CityController {
 
     @GetMapping("/city/name/{name}")
     fun getCityByName(@PathVariable name: String) = cityService.showCityName(name)
-
-//    @GetMapping("/city/cities")
-//    fun getCities(): MutableList<City> = cityService.getCities()
 
     @PutMapping("/city/update")
     fun updateCity(@RequestBody request: CityRequest) =
