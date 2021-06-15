@@ -24,7 +24,7 @@ class MyUserDetailsService : UserDetailsService {
     override fun loadUserByUsername(username: String?): UserDetails? {
         val user: Optional<com.example.jwt_kotlin.entity.User?>? = userRepository.findUserByUsername(username)
 
-        if (!user!!.isPresent()) throw UsernameNotFoundException("Does not exist")
+        if (!user!!.isPresent) throw UsernameNotFoundException("Does not exist")
 
         return User(
             user.get().username, user.get().password, true,

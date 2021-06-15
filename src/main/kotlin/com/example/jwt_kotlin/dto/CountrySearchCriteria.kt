@@ -5,6 +5,5 @@ data class CountrySearchCriteria (
     var name: String? = null,
     var peopleCount: Long = 0,
     var ids: List<Int>? = null,
-    var regionName: String? = null,
-    var citiesName: String? = null
+    var regionName: String? = null
     )

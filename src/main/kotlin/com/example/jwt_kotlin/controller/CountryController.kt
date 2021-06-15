@@ -29,13 +29,11 @@ class CountryController {
     fun deleteCountry(@PathVariable id: Int): String = countryService.removeById(id)
 
     @GetMapping
-    @RequestMapping(value = ["/country/pagedcountries", "/country/pagedcountries/{ids}"])
-    fun getPagedCountries(@PathVariable(required = false) ids: List<Int>?, countryPage: CountryPage?,
-                          countrySearchCriteria: CountrySearchCriteria): Any? {
-        return if (ids == null) {
-            countryPage?.let { countryService.getFilteredCountries(it, countrySearchCriteria) }
-        } else {
-            countryPage?.let { countryService.getCitiesId(it, ids) }
-        }
+    @RequestMapping("/country/pagedcountries")
+    fun getPagedCountries(
+        countryPage: CountryPage?,
+        countrySearchCriteria: CountrySearchCriteria
+    ): Any? {
+        return countryPage?.let { countryService.getFilteredCountries(it, countrySearchCriteria) }
     }
 }

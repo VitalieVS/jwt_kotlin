@@ -1,7 +1,6 @@
 package com.example.jwt_kotlin.repository
 
 import com.example.jwt_kotlin.dto.CountrySearchCriteria
-import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Country
 import com.example.jwt_kotlin.entity.Region
 import com.example.jwt_kotlin.model.CountryPage
@@ -24,19 +23,21 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
 
     fun findAllWithFilters(
         countryPage: CountryPage,
-        countrySearchCriteria: CountrySearchCriteria,
+        countrySearchCriteria: CountrySearchCriteria
     ): PageImpl<Country>? {
         val criteriaQuery: CriteriaQuery<Country> = criteriaBuilder.createQuery(Country::class.java)
         val countryRoot: Root<Country> = criteriaQuery.from(Country::class.java)
         val predicate: Predicate = getPredicate(countrySearchCriteria, countryRoot)
-        val typedQuery: TypedQuery<Country> = entityManager.createQuery(criteriaQuery)
-        val countryCount: Long? = getCountryCount(predicate)
-        val pageable: Pageable = getPageable(countryPage)
 
         criteriaQuery.select(countryRoot).where(predicate)
 
+        val typedQuery: TypedQuery<Country> = entityManager.createQuery(criteriaQuery)
+
         typedQuery.firstResult = countryPage.pageNumber * countryPage.pageSize
         typedQuery.maxResults = countryPage.pageSize
+
+        val countryCount: Long? = getCountryCount(predicate)
+        val pageable: Pageable = getPageable(countryPage)
 
         return countryCount?.let { PageImpl(typedQuery.resultList, pageable, it) }
     }
@@ -61,7 +62,7 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
         val predicates: MutableList<Predicate> = ArrayList()
 
         lateinit var joinRegions: Join<Country, Region>
-       // lateinit var joinCities: Join<Region, City>
+        // lateinit var joinCities: Join<Region, City>
 
         if (Objects.nonNull(countrySearchCriteria.name)) {
             predicates.add(
@@ -83,6 +84,15 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
                     joinRegions.get("name"), "%" + countrySearchCriteria.regionName.toString() + "%"
                 )
             )
+        }
+
+        if (Objects.nonNull(countrySearchCriteria.ids)) {
+            joinRegions = countryRoot.join("regions", JoinType.INNER)
+            joinRegions.alias("id")
+
+            val exp: Expression<String> = joinRegions.get("id")
+            val regionsPredicate: Predicate = exp.`in`(countrySearchCriteria.ids)
+            predicates.add(regionsPredicate)
         }
 
         return criteriaBuilder.and(*predicates.toTypedArray())

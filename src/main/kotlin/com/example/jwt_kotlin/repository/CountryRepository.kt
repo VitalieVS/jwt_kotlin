@@ -10,14 +10,4 @@ import org.springframework.data.repository.query.Param
 interface CountryRepository : JpaRepository<Country, Int> {
     fun findByName(name: String): Country
     fun save(country: Country?): Country
-
-    @Query(
-        value = "SELECT * " +
-                "FROM countries c " +
-                "JOIN regions r ON c.id = r.country_id " +
-                "JOIN cities city ON city.city_id = r.id " +
-                "WHERE r.id in :ids",
-        nativeQuery = true
-    )
-    fun fetchCountriesRegionsCities(pageable: Pageable, @Param("ids") ids: List<Int>): Page<Country>
 }

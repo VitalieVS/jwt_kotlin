@@ -21,10 +21,10 @@ class CountryService {
     fun saveCountry(country: Country): Country = countryRepository.save(country)
 
     fun showCountryName(name: String) = countryRepository.findByName(name)
-    
+
     fun getCountries(): MutableList<Country> = countryRepository.findAll()
 
-    fun updateCountry(country: Country) : Country {
+    fun updateCountry(country: Country): Country {
         val existingCountry = country.id?.let {
             countryRepository.findById(it).orElse(null)
         }!!
@@ -35,7 +35,7 @@ class CountryService {
         return countryRepository.save(existingCountry)
     }
 
-    fun removeById(id: Int) : String {
+    fun removeById(id: Int): String {
         countryRepository.deleteById(id)
         return "Deleted id:$id"
     }
@@ -48,18 +48,10 @@ class CountryService {
         return countryRepository.findAll(pageable)
     }
 
-    fun getCitiesId(countryPage: CountryPage, ids: List<Int>): Page<Country> {
-        val pageable: Pageable = PageRequest.of(
-            countryPage.pageNumber,
-            1
-        )
-        return countryRepository.fetchCountriesRegionsCities(pageable, ids)
-    }
-
-    fun getFilteredCountries(countryPage: CountryPage,
-                     countrySearchCriteria: CountrySearchCriteria
+    fun getFilteredCountries(
+        countryPage: CountryPage,
+        countrySearchCriteria: CountrySearchCriteria
     ): PageImpl<Country>? {
         return countryCriteriaRepository.findAllWithFilters(countryPage, countrySearchCriteria)
     }
-    
 }
