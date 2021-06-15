@@ -12,7 +12,11 @@ interface CountryRepository : JpaRepository<Country, Int> {
     fun save(country: Country?): Country
 
     @Query(
-        value = "SELECT * from countries c JOIN regions r on c.id = r.country_id JOIN cities city on city.city_id = r.id where r.id in :ids",
+        value = "SELECT * " +
+                "FROM countries c " +
+                "JOIN regions r ON c.id = r.country_id " +
+                "JOIN cities city ON city.city_id = r.id " +
+                "WHERE r.id in :ids",
         nativeQuery = true
     )
     fun fetchCities(pageable: Pageable, @Param("ids") ids: List<Int>): Page<Country>
