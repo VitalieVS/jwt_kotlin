@@ -1,12 +1,8 @@
 package com.example.jwt_kotlin.service.country_service
 
-import com.example.jwt_kotlin.dto.CitySearchCriteria
 import com.example.jwt_kotlin.dto.CountrySearchCriteria
-import com.example.jwt_kotlin.entity.City
 import com.example.jwt_kotlin.entity.Country
-import com.example.jwt_kotlin.model.CityPage
 import com.example.jwt_kotlin.model.CountryPage
-import com.example.jwt_kotlin.repository.CityRepository
 import com.example.jwt_kotlin.repository.CountryCriteriaRepository
 import com.example.jwt_kotlin.repository.CountryRepository
 import org.springframework.beans.factory.annotation.Autowired
