@@ -60,9 +60,7 @@ class CountryCriteriaRepository(entityManager: EntityManager) {
         countryRoot: Root<Country>
     ): Predicate {
         val predicates: MutableList<Predicate> = ArrayList()
-
         lateinit var joinRegions: Join<Country, Region>
-        // lateinit var joinCities: Join<Region, City>
 
         if (Objects.nonNull(countrySearchCriteria.name)) {
             predicates.add(
